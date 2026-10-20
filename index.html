@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COMPUTER.UZ — Kompyuterlar, Ehtiyot Qismlar, Kerakli Aksessuarlar va Texno-Jurnal</title>
+  <meta name="description" content="O'zbekistondagi flagman kompyuter do'koni va texnologik laboratoriya. Tayyor kompyuterlar, videokartalar, protsessorlar, ona platalar, periferiya, interaktiv PC Konfigurator va chuqur benchmark obzorlar." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ====================================================================
+       1. TOP UTILITY & HARDWARE LAB TELEMETRY BAR
+       ==================================================================== -->
+  <div class="utility-bar">
+    <div class="container utility-inner">
+      <div class="utility-left">
+        <span class="utility-item">
+          <span class="utility-dot"></span>
+          <strong>Toshkent bo'ylab 2 soatda</strong> ekspress yetkazib berish va bepul yig'ish
+        </span>
+        <span class="utility-item">
+          🛡️ Rasmiy 36 oygacha servis kafolati (Malika &amp; Lab Markazi)
+        </span>
+      </div>
+      <div class="utility-right">
+        <span class="utility-rate" id="exchangeRateBadge">Kurs: 1 USD = 12 850 UZS</span>
+        <div class="utility-controls">
+          <div class="pill-switch" role="group" aria-label="Valyuta tanlash">
+            <button type="button" class="active" data-currency="UZS" id="currUZS">UZS (So'm)</button>
+            <button type="button" data-currency="USD" id="currUSD">USD ($)</button>
+          </div>
+          <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Mavzuni o'zgartirish">
+            <span id="themeIcon">🌙</span>
+            <span id="themeText">Grafit Rejim</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       2. STICKY HEADER & HYBRID NAVIGATION
+       ==================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-main">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-logo" aria-label="computer.uz bosh sahifa">
+          <div class="brand-mark">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F7F7F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+              <rect x="9" y="9" width="6" height="6" stroke="#E46936"></rect>
+              <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+            </svg>
+          </div>
+          <div class="brand-text-wrap">
+            <div class="brand-name">computer<span>.uz</span></div>
+            <div class="brand-tagline">SAVDO DO'KONI &bull; LAB &amp; YANGILIKLAR</div>
+          </div>
+        </a>
+
+        <!-- Smart Search across Store + News -->
+        <div class="header-search">
+          <div class="search-input-wrap">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="search"
+              id="globalSearchInput"
+              class="search-input"
+              placeholder="RTX 5090, Ryzen 9 9950X, DDR5, OLED monitor yoki maqola qidiring..."
+              autocomplete="off"
+            />
+            <span class="search-kbd">Ctrl + K</span>
+          </div>
+          <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
+
+        <!-- Quick Actions: Compare, Wishlist, Cart -->
+        <div class="header-actions">
+          <button type="button" class="action-btn" id="openCompareBtn" title="Mahsulotlarni taqqoslash">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+            </svg>
+            <span>Taqqoslash</span>
+            <span class="badge-count" id="compareCountBadge">0</span>
+          </button>
+
+          <button type="button" class="action-btn" id="openWishlistBtn" title="Sevimli qurilmalar">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            <span class="badge-count" id="wishlistCountBadge">0</span>
+          </button>
+
+          <button type="button" class="action-btn cart-btn" id="openCartBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span id="headerCartTotal">Savatcha</span>
+            <span class="badge-count" id="cartCountBadge">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Category & Section Strip -->
+      <nav class="header-nav" aria-label="Asosiy bo'limlar">
+        <div class="nav-list">
+          <div class="nav-links-group">
+            <a href="#katalog" class="nav-link active" data-nav-cat="all">🔥 Barcha Mahsulotlar</a>
+            <a href="#katalog" class="nav-link" data-nav-cat="systems">🖥️ Tayyor Kompyuter &amp; Noutbuk</a>
+            <a href="#katalog" class="nav-link" data-nav-cat="core">⚡ Protsessor &amp; Videokarta</a>
+            <a href="#katalog" class="nav-link" data-nav-cat="board_mem">🧩 Ona Plata, RAM &amp; SSD</a>
+            <a href="#katalog" class="nav-link" data-nav-cat="cooling_power">❄️ Sovutish, Korpus &amp; PSU</a>
+            <a href="#katalog" class="nav-link" data-nav-cat="peripherals">🎧 Monitor &amp; Periferiya</a>
+            <a href="#katalog" class="nav-link" data-nav-cat="essentials">🛠️ Kerakli Narsalar (UPS, Termopasta)</a>
+          </div>
+          <div class="nav-links-group">
+            <a href="#konfigurator" class="nav-link highlight-builder">⚙️ PC Konfigurator</a>
+            <a href="#jurnal" class="nav-link highlight-news">📰 Texno-Jurnal &amp; Benchmark</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====================================================================
+       3. HERO BENTO SHOWCASE (SAVDO + YANGILIKLAR UYG'UNLIGI)
+       ==================================================================== -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-bento">
+
+        <!-- Left Flagship Editorial + Commerce Card -->
+        <div class="hero-flagship">
+          <div class="hero-flagship-content">
+            <div>
+              <div class="hero-eyebrow-group">
+                <span class="badge-editorial">🔥 FLAGMAN YIG'MA VA LAB TEST</span>
+                <span class="badge-lab">Lab Bahosi: 9.9 / 10</span>
+              </div>
+              <h1 class="hero-title">
+                ProArt Studio &amp; <span>GeForce RTX 5090</span>: Sun'iy Intellekt va 4K Kibersport Cho'qqisi
+              </h1>
+              <p class="hero-lead">
+                Computer.uz muhandislari tomonidan sinovdan o'tkazilgan AMD Ryzen 9 9950X, 64GB DDR5-6400 va RTX 5090 32GB GDDR7 asosidagi mukammal ishchi stansiya. Ham tayyor yig'mada, ham qismlarga bo'lib xarid qiling.
+              </p>
+
+              <div class="hero-telemetry">
+                <div class="telemetry-cell">
+                  <span class="telemetry-label">4K Ray Tracing</span>
+                  <span class="telemetry-val emerald">168 FPS (Ultra)</span>
+                </div>
+                <div class="telemetry-cell">
+                  <span class="telemetry-label">Harorat (Suyuqlik)</span>
+                  <span class="telemetry-val">58°C Maks</span>
+                </div>
+                <div class="telemetry-cell">
+                  <span class="telemetry-label">Muddatli To'lov</span>
+                  <span class="telemetry-val">0% • 12 Oygacha</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-cta-row">
+              <button type="button" class="btn-primary-copper" id="heroBuyFlagshipBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>Flagmanni Savatga Qo'shish</span>
+              </button>
+              <button type="button" class="btn-secondary-glass" id="heroReadReviewBtn">
+                📊 Lab Benchmark Obzorini O'qish
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-flagship-visual">
+            <img
+              src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=85"
+              alt="Custom High-End Liquid Cooled Workstation PC"
+            />
+            <div class="hero-price-floating">
+              <span class="label">To'liq Tayyor Yig'ma Narxi:</span>
+              <span class="amount" id="heroFlagshipPrice">49 950 000 so'm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Stack: Kun Mahsuloti (Flash Deal) + So'nggi Texno-Xabarlar (Live Wire) -->
+        <div class="hero-side-stack">
+
+          <!-- Flash Deal Card -->
+          <div class="side-card">
+            <div class="flash-deal-header">
+              <span class="flash-tag">⚡ KUN CHEGIRMASI (-14%)</span>
+              <span class="countdown-timer" id="flashTimer">06:42:19</span>
+            </div>
+            <div class="flash-deal-body">
+              <img
+                src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=600&q=85"
+                alt="ASUS TUF Gaming GeForce RTX 4080 SUPER"
+                class="flash-deal-img"
+              />
+              <div class="flash-deal-info">
+                <h3>ASUS ROG Strix RTX 4080 SUPER 16GB</h3>
+                <p>DLSS 3.5 • Uch ventilyatorli bug' kamerasi • PCIe 4.0</p>
+                <div class="flash-price-row">
+                  <span class="flash-price-current" data-usd-price="1090">14 006 500 so'm</span>
+                  <span class="flash-price-old" data-usd-price="1260">16 191 000 so'm</span>
+                </div>
+                <button type="button" class="btn-add-cart" id="flashDealBuyBtn" style="width:100%; justify-content:center;">
+                  🛒 Darhol Xarid Qilish (Omborda 4 dona)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Tech News Wire Card -->
+          <div class="side-card">
+            <div class="wire-header">
+              <span class="wire-title">
+                <span class="utility-dot"></span>
+                TEXNO-JURNAL: SO'NGGI XABARLAR
+              </span>
+              <a href="#jurnal" style="font-size:0.78rem; font-weight:700; color:var(--accent-cobalt);">Barchasi &rarr;</a>
+            </div>
+            <div class="wire-list" id="heroWireList">
+              <!-- Populated by JS with interactive click-to-read -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       4. VISUAL CATEGORY ECOSYSTEM ("KOMPYUTER VA UNING BARCHA QISMLARI")
+       ==================================================================== -->
+  <section class="section-block" id="katalog">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="section-eyebrow">TO'LIQ EKOTIZIM VA EHTIYOT QISMLAR</span>
+          <h2 class="section-title">Kompyuter, Uning Qismlari va Kerakli Vositalar</h2>
+          <p class="section-subtitle">
+            Protsessor va ona platadan tortib termopasta, UPS stabilizator va professional monitorlargacha — barchasi original seriya raqami va laboratoriya tekshiruvi bilan.
+          </p>
+        </div>
+      </div>
+
+      <!-- 6 Main Ecosystem Cards -->
+      <div class="category-bento-grid" id="categoryGrid">
+        <button type="button" class="category-card active" data-cat="all">
+          <div class="category-card-top">
+            <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=300&q=80" alt="Barcha qismlar" class="category-thumb" />
+            <span class="category-count">24 mahsulot</span>
+          </div>
+          <div>
+            <h3>Barcha Bo'limlar</h3>
+            <p>To'liq katalog: Kompyuterlar, ehtiyot qismlar va aksessuarlar</p>
+          </div>
+        </button>
+
+        <button type="button" class="category-card" data-cat="systems">
+          <div class="category-card-top">
+            <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=300&q=80" alt="Tayyor Kompyuterlar" class="category-thumb" />
+            <span class="category-count">4 mahsulot</span>
+          </div>
+          <div>
+            <h3>Tayyor PC va Noutbuklar</h3>
+            <p>Gaming yig'malar, AI Workstation va Pro noutbuklar</p>
+          </div>
+        </button>
+
+        <button type="button" class="category-card" data-cat="core">
+          <div class="category-card-top">
+            <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=300&q=80" alt="CPU va GPU" class="category-thumb" />
+            <span class="category-count">5 mahsulot</span>
+          </div>
+          <div>
+            <h3>Protsessor va Videokarta</h3>
+            <p>AMD Ryzen 9, Intel Core Ultra, GeForce RTX 50/40 seriya</p>
+          </div>
+        </button>
+
+        <button type="button" class="category-card" data-cat="board_mem">
+          <div class="category-card-top">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=300&q=80" alt="Ona plata va xotira" class="category-thumb" />
+            <span class="category-count">5 mahsulot</span>
+          </div>
+          <div>
+            <h3>Ona Plata, RAM va SSD</h3>
+            <p>X870E / Z890 platalar, DDR5 xotira, PCIe 5.0 NVMe SSD</p>
+          </div>
+        </button>
+
+        <button type="button" class="category-card" data-cat="cooling_power">
+          <div class="category-card-top">
+            <img src="https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=300&q=80" alt="Sovutish va Korpus" class="category-thumb" />
+            <span class="category-count">4 mahsulot</span>
+          </div>
+          <div>
+            <h3>Sovutish, Korpus va PSU</h3>
+            <p>Suyuqlik AIO kulerlar, ATX 3.1 quvvat bloki, Panoramali korpus</p>
+          </div>
+        </button>
+
+        <button type="button" class="category-card" data-cat="essentials">
+          <div class="category-card-top">
+            <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=300&q=80" alt="Periferiya va Kerakli Narsalar" class="category-thumb" />
+            <span class="category-count">6 mahsulot</span>
+          </div>
+          <div>
+            <h3>Periferiya va Kerakli Narsalar</h3>
+            <p>OLED Monitor, Mexanik klaviatura, Termopasta, UPS, Kreslo</p>
+          </div>
+        </button>
+      </div>
+
+      <!-- Filter & Sorting Toolbar -->
+      <div class="catalog-toolbar" style="margin-top: 22px;">
+        <div class="subcat-pills" id="subcatPills">
+          <button type="button" class="subcat-pill active" data-subcat="all">Barchasi</button>
+          <button type="button" class="subcat-pill" data-subcat="Tayyor PC">🖥️ Tayyor PC</button>
+          <button type="button" class="subcat-pill" data-subcat="Noutbuk">💻 Noutbuklar</button>
+          <button type="button" class="subcat-pill" data-subcat="Videokarta">🎮 Videokartalar (GPU)</button>
+          <button type="button" class="subcat-pill" data-subcat="Protsessor">🧠 Protsessorlar (CPU)</button>
+          <button type="button" class="subcat-pill" data-subcat="Ona plata">🔌 Ona Platalar</button>
+          <button type="button" class="subcat-pill" data-subcat="Operativ xotira">⚡ RAM DDR5</button>
+          <button type="button" class="subcat-pill" data-subcat="SSD Xotira">💾 NVMe SSD</button>
+          <button type="button" class="subcat-pill" data-subcat="Sovutish va Quvvat">❄️ Kuler, PSU &amp; Korpus</button>
+          <button type="button" class="subcat-pill" data-subcat="Monitor va Periferiya">🖱️ Monitor, Klaviatura &amp; Sichqoncha</button>
+          <button type="button" class="subcat-pill" data-subcat="Kerakli Vositalar">🛠️ Kerakli Vositalar (Termopasta, UPS)</button>
+        </div>
+
+        <div class="toolbar-filters">
+          <label class="filter-checkbox-label">
+            <input type="checkbox" id="filterLabChoice" />
+            <span>🏆 Faqat Lab Tavsiyasi</span>
+          </label>
+
+          <select id="brandFilterSelect" class="filter-select" aria-label="Brend bo'yicha saralash">
+            <option value="all">Barcha Brendlar</option>
+            <option value="ASUS ROG">ASUS / ROG / ProArt</option>
+            <option value="AMD">AMD</option>
+            <option value="Intel">Intel</option>
+            <option value="NVIDIA">NVIDIA</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Corsair">Corsair</option>
+            <option value="Logitech G">Logitech G</option>
+            <option value="Keychron">Keychron</option>
+            <option value="Arctic">Arctic / Noctua</option>
+            <option value="Lian Li">Lian Li / Seasonic</option>
+          </select>
+
+          <select id="sortFilterSelect" class="filter-select" aria-label="Tartiblash">
+            <option value="featured">Saralash: Ommabop va Tavsiya</option>
+            <option value="price-asc">Narx: Arzonroqdan Boshlab</option>
+            <option value="price-desc">Narx: Qimmatroqdan Boshlab</option>
+            <option value="rating-desc">Lab Bahosi: Eng Yuqori</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Product Catalog Grid -->
+      <div class="product-grid" id="productGrid">
+        <!-- Populated by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       5. INTERACTIVE PC KONFIGURATOR (KOMPYUTER YIG'ISH LABORATORIYASI)
+       ==================================================================== -->
+  <section class="builder-section" id="konfigurator">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="section-eyebrow">MUHANDISLIK KONFIGURATORI • 100% MOSLIK KAFOLATI</span>
+          <h2 class="section-title">O'z Kompyuteringizni Qismma-Qism Yig'ing</h2>
+          <p class="section-subtitle">
+            Har bir tanlangan detalning soket mosligi, quvvat sarfi (Watt) va 4K o'yin / dasturlashdagi unumdorligi real vaqtda hisoblanadi. Barcha 8 ta qismni bitta tugma bilan 5% chegirmada savatga qo'shing!
+          </p>
+        </div>
+        <div class="preset-buttons">
+          <button type="button" class="preset-btn" data-preset="esports">🎯 Kibersport 2K Yig'ma</button>
+          <button type="button" class="preset-btn active" data-preset="creator">🚀 Dasturchi &amp; 3D Studio</button>
+          <button type="button" class="preset-btn" data-preset="extreme">👑 4K AI Flagman (RTX 5090)</button>
+        </div>
+      </div>
+
+      <div class="builder-layout">
+        <!-- 8 Component Slots -->
+        <div class="builder-slots-grid" id="builderSlotsContainer">
+          <!-- Populated dynamically by app.js -->
+        </div>
+
+        <!-- Live Engineering Telemetry & Checkout Summary -->
+        <aside class="builder-telemetry-panel">
+          <div class="telemetry-status-banner" id="builderCompatBanner">
+            <span>✅</span>
+            <span id="builderCompatText">Barcha 8 ta qism 100% o'zaro mos (AM5 / DDR5 / PCIe 5.0)</span>
+          </div>
+
+          <div class="telemetry-metrics-grid">
+            <div class="metric-box">
+              <span class="label">Umumiy Quvvat Sarfi</span>
+              <span class="val" id="builderWattageVal">580 W / 1000 W</span>
+            </div>
+            <div class="metric-box">
+              <span class="label">Komplekt Chegirmasi (-5%)</span>
+              <span class="val" id="builderDiscountVal" style="color:#34D399;">-1 850 000 so'm</span>
+            </div>
+          </div>
+
+          <div class="perf-bars">
+            <div class="perf-bar-row">
+              <div class="perf-bar-label">
+                <span>🎮 2K / 4K Gaming FPS Indeksi</span>
+                <strong id="perfGamingLabel">154 FPS</strong>
+              </div>
+              <div class="perf-track">
+                <div class="perf-fill" id="perfGamingBar" style="width: 88%;"></div>
+              </div>
+            </div>
+
+            <div class="perf-bar-row">
+              <div class="perf-bar-label">
+                <span>🎬 3D Blender &amp; 8K Video Montaj</span>
+                <strong id="perfRenderLabel">94 / 100</strong>
+              </div>
+              <div class="perf-track">
+                <div class="perf-fill" id="perfRenderBar" style="width: 94%;"></div>
+              </div>
+            </div>
+
+            <div class="perf-bar-row">
+              <div class="perf-bar-label">
+                <span>🤖 Dasturlash, Docker &amp; Lokal AI LLM</span>
+                <strong id="perfAiLabel">96 / 100</strong>
+              </div>
+              <div class="perf-track">
+                <div class="perf-fill" id="perfAiBar" style="width: 96%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="builder-total-box">
+            <div class="builder-price-line">
+              <span style="font-size:0.86rem; color:#9CA3AF;">5% chegirma bilan yakuniy narx:</span>
+              <span class="total-amount" id="builderTotalPrice">34 200 000 so'm</span>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:0.76rem; color:#A7B0BC;" id="builderInstallmentText">
+              Muddatli to'lov: oyiga 2 850 000 so'mdan &times; 12 oy (Bepul yig'ish + Windows 11 Pro o'rnatish va stresstest sovg'a!)
+            </div>
+            <button type="button" class="btn-primary-copper" id="addCustomBuildToCartBtn" style="width:100%; justify-content:center; margin-top:6px;">
+              🛠️ Butun Yig'mani Savatga Qo'shish (8 ta qism)
+            </button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       6. COMPUTER.UZ JURNAL — YANGILIKLAR, CHUQUR TAHLIL VA BENCHMARKLAR
+       ==================================================================== -->
+  <section class="section-block" id="jurnal">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="section-eyebrow">COMPUTER.UZ MEDIA &amp; HARDWARE LAB</span>
+          <h2 class="section-title">Texno-Yangiliklar, Real Benchmarklar va Xarid Qo'llanmalari</h2>
+          <p class="section-subtitle">
+            Biz shunchaki sotmaymiz — har bir yangi videokarta, protsessor va monitorni o'z laboratoriyamizda sinovdan o'tkazamiz. Maqolani o'qing va sinovdan o'tgan mahsulotni o'sha yerning o'zida xarid qiling!
+          </p>
+        </div>
+        <div class="subcat-pills" id="newsFilterPills">
+          <button type="button" class="subcat-pill active" data-newscat="all">Barcha Maqolalar</button>
+          <button type="button" class="subcat-pill" data-newscat="Lab Benchmark">📊 Lab Benchmark</button>
+          <button type="button" class="subcat-pill" data-newscat="Texno-Yangiliklar">🔥 Texno-Yangiliklar</button>
+          <button type="button" class="subcat-pill" data-newscat="Xarid Qo'llanmasi">🧭 Xarid Qo'llanmasi</button>
+          <button type="button" class="subcat-pill" data-newscat="Kompyuter Parvarishi">🧰 Parvarish va Kerakli Narsalar</button>
+        </div>
+      </div>
+
+      <!-- Interactive Live Hardware Benchmark Comparison Widget -->
+      <div class="benchmark-lab-card">
+        <div class="benchmark-header">
+          <div>
+            <span class="section-eyebrow" style="margin-bottom:2px;">INTERAKTIV LABORATORIYA STENDI</span>
+            <h3 style="font-family:var(--font-display); font-size:1.25rem; font-weight:800;">
+              2026-yil Flagman Videokarta va Protsessorlarning Real Unumdorligi
+            </h3>
+          </div>
+          <div class="benchmark-tabs" id="benchmarkTabs">
+            <button type="button" class="bench-tab active" data-bench="cyberpunk">🎮 Cyberpunk 2077 (4K Path Tracing)</button>
+            <button type="button" class="bench-tab" data-bench="blender">🎨 Blender 4.3 Render (Sekund — Kamrog'i yaxshi)</button>
+            <button type="button" class="bench-tab" data-bench="cinebench">⚙️ Cinebench 2024 Multi-Core (Ball)</button>
+          </div>
+        </div>
+        <div class="benchmark-bars-container" id="benchmarkBarsContainer">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </div>
+
+      <!-- Editorial News & Review Cards Grid -->
+      <div class="news-grid" id="newsGrid">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       7. SERVICE & ENGINEERING GUARANTEES
+       ==================================================================== -->
+  <section class="section-block" style="padding-top: 10px;">
+    <div class="container">
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="trust-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h4>100% Original va Plombalangan</h4>
+          <p>Barcha protsessor, videokarta va ehtiyot qismlar rasmiy zavod plombasi hamda seriya raqami tekshiruvi bilan yetkaziladi.</p>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+          </div>
+          <h4>Professional Kabel-Menejment</h4>
+          <p>Konfiguratorda yig'ilgan har bir kompyuter Arctic MX-6 termopastasi, BIOS XMP/EXPO sozlamasi va 2 soatlik OCCT stress-testdan o'tadi.</p>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+              <line x1="1" y1="10" x2="23" y2="10"></line>
+            </svg>
+          </div>
+          <h4>Halol Muddatli To'lov (Nasiya)</h4>
+          <p>Pasport va plastik karta orqali 3, 6 va 12 oyga onlayn rasmiylashtirish. Boshlang'ich to'lovsiz qulay imkoniyat.</p>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <h4>O'zbekiston Bo'ylab Tezkor Pochta</h4>
+          <p>Toshkent shahrida 2 soat ichida kuryer orqali, barcha 12 viloyat markazlariga maxsus zarbaga chidamli qadoqda 24 soatda yetkazib berish.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       8. FOOTER
+       ==================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom: 14px;">
+            <div class="brand-mark">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F7F7F5" stroke-width="2">
+                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                <rect x="9" y="9" width="6" height="6" stroke="#E46936"></rect>
+              </svg>
+            </div>
+            <div class="brand-text-wrap">
+              <div class="brand-name" style="color:#FFFFFF;">computer<span>.uz</span></div>
+              <div class="brand-tagline" style="color:#9CA3AF;">SAVDO VA TEXNOLOGIYA PORTALI</div>
+            </div>
+          </div>
+          <p style="font-size:0.85rem; color:#9CA3AF; margin-bottom:14px;">
+            O'zbekistondagi professional kompyuter muhandisligi markazi. Asl ehtiyot qismlar savdosi, laboratoriya testlari va xolis texno-jurnalistika bitta platformada.
+          </p>
+          <p style="font-family:var(--font-mono); font-size:0.8rem; color:#E5E7EB;">
+            📍 Toshkent sh., Shayxontohur tumani, Labzak 12A (Malika B-24 Showroom)<br />
+            📞 +998 (71) 200-88-99 &bull; Har kuni 09:00 – 21:00
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Kompyuter Qismlari</h4>
+          <ul class="footer-links">
+            <li><a href="#katalog" data-footer-subcat="Videokarta">Videokartalar (RTX 5090 / 4080 Super)</a></li>
+            <li><a href="#katalog" data-footer-subcat="Protsessor">Protsessorlar (AMD Ryzen &amp; Intel Core)</a></li>
+            <li><a href="#katalog" data-footer-subcat="Ona plata">Ona Platalar (X870E / Z890 / B650)</a></li>
+            <li><a href="#katalog" data-footer-subcat="Operativ xotira">Operativ Xotira (DDR5 6000-8000MHz)</a></li>
+            <li><a href="#katalog" data-footer-subcat="SSD Xotira">Doimiy Xotira (PCIe 5.0 / 4.0 NVMe SSD)</a></li>
+            <li><a href="#katalog" data-footer-subcat="Sovutish va Quvvat">Suyuqlik Kulerlar, PSU va Korpuslar</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Kerakli Narsalar &amp; Jurnal</h4>
+          <ul class="footer-links">
+            <li><a href="#katalog" data-footer-subcat="Monitor va Periferiya">OLED va IPS Kibersport Monitorlar</a></li>
+            <li><a href="#katalog" data-footer-subcat="Monitor va Periferiya">Mexanik Klaviatura va Sichqonchalar</a></li>
+            <li><a href="#katalog" data-footer-subcat="Kerakli Vositalar">Termopasta, UPS Stabilizator va Xablar</a></li>
+            <li><a href="#konfigurator">Interaktiv PC Konfigurator</a></li>
+            <li><a href="#jurnal">2026 Videokartalar Benchmark Jadvali</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Texno-Dayjest va Chegirmalar</h4>
+          <p style="font-size:0.84rem; color:#9CA3AF;">
+            Yangi kelgan videokartalar, Lab maqolalari va yopiq chegirma promokodlarini birinchi bo'lib oling. Keyingi xarid uchun <strong style="color:#F59E6C;">COMPUTER2026</strong> promokodidan foydalaning (-10%).
+          </p>
+          <form class="newsletter-form" id="newsletterForm">
+            <input type="email" placeholder="Email yoki Telegram @username" required />
+            <button type="submit">Obuna</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 COMPUTER.UZ MChJ. Barcha huquqlar himoyalangan.</span>
+        <span>To'lov tizimlari: Uzcard • Humo • Click • Payme • Uzum Nasiya • Korporativ pul o'tkazish</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====================================================================
+       9. DYNAMIC MODALS (QUICK VIEW, ARTICLE READER, COMPARE, CART DRAWER)
+       ==================================================================== -->
+
+  <!-- Product Quick View & Article Reader Modal -->
+  <div class="modal-backdrop" id="universalModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window" id="universalModalContent">
+      <!-- Populated dynamically by app.js -->
+    </div>
+  </div>
+
+  <!-- Slide-Over Shopping Cart & Checkout Drawer -->
+  <div class="drawer-backdrop" id="cartDrawerBackdrop">
+    <div class="cart-drawer">
+      <div class="drawer-header">
+        <div>
+          <h3 style="font-family:var(--font-display); font-size:1.15rem; font-weight:800;">🛒 Xarid Savatchasi</h3>
+          <span style="font-size:0.78rem; color:var(--text-muted);" id="cartDrawerSub">Tanlangan kompyuter va ehtiyot qismlar</span>
+        </div>
+        <button type="button" class="modal-close-btn" id="closeCartDrawerBtn" style="position:static;">&times;</button>
+      </div>
+
+      <div class="drawer-body" id="cartItemsContainer">
+        <!-- Populated by app.js -->
+      </div>
+
+      <div class="drawer-footer">
+        <div class="promo-row">
+          <input type="text" id="promoCodeInput" placeholder="Promokod (masalan: COMPUTER2026)" />
+          <button type="button" id="applyPromoBtn">Qo'llash</button>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; font-size:0.84rem; color:var(--text-secondary);">
+          <span>Yetkazib berish va diagnostika:</span>
+          <strong style="color:var(--accent-emerald);">Bepul (0 so'm)</strong>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span style="font-weight:700;">Jami to'lov:</span>
+          <span style="font-family:var(--font-display); font-size:1.35rem; font-weight:800; color:var(--accent-copper);" id="cartTotalValue">0 so'm</span>
+        </div>
+
+        <button type="button" class="btn-primary-copper" id="checkoutOrderBtn" style="width:100%; justify-content:center;">
+          ✅ Buyurtmani Rasmiylashtirish
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
